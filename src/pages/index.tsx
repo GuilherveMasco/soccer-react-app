@@ -19,10 +19,20 @@ const Home: NextPage = () => {
                                 />
                             </div>
                             
-                            <form className="flex flex-col w-1/10 bg-[#d3f5ff] shadow-md rounded p-8">
+                            <form className="flex flex-col w-1/10 bg-[#d3f5ff] shadow-md rounded p-8" id="login"
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const tokenInput = document.getElementById('token-input') as HTMLInputElement;
+                                    const token = tokenInput.value;
+                                    localStorage.setItem('token', token);
+                                    window.location.href = '/dashboard';
+                                }
+                            }
+                            >
                                 <h1 className="text-2xl font-bold mb-5 flex items-center justify-center">Entre para continuar</h1>
                                 <input
                                 placeholder="Token da API"
+                                id="token-input"
                                 className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
                                 />
 
@@ -37,12 +47,14 @@ const Home: NextPage = () => {
 
                                 <button
                                 type="submit"
+                                form="login"
                                 className="bg-[#31c48d] hover:bg-[#28a074] text-white font-bold py-2 px-4 rounded"
                                 >
                                     Login
                                 </button>
                             </form>
-                        </div>                        
+                        </div>
+
                     </VStack>
                 </div>
             </Flex>     
