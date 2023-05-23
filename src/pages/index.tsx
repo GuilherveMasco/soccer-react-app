@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Image from 'next/image';
 import { Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
@@ -13,9 +14,11 @@ const Home: NextPage = () => {
 
                         <div className="flex flex-col items-center justify-center h-screen">
                             <div>
-                                <img
+                                <Image
                                 src="https://raw.githubusercontent.com/GuilherveMasco/soccer-react-app/development/src/components/Images/soccer-app-logo.png"
-                                className='style-logo' alt="Soccer App Logo"
+                                width= {200}
+                                height= {200}
+                                alt="Soccer App Logo"
                                 />
                             </div>
                             
