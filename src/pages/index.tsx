@@ -12,11 +12,17 @@ async function checkToken(token: string) {
         });
         
         if (response.ok) {
-            return true;
+            window.location.href = '/pesquisar';
         }
-        return false;
+        const alertTokenElement = document.getElementById('alert-token');
+        alertTokenElement!.style.color = 'orange';
+        alertTokenElement!.style.fontSize = '0.8rem';
+        alertTokenElement!.innerHTML = 'Token inválido';
     } catch (error) {
-        return false;
+        const alertTokenElement = document.getElementById('alert-token');
+        alertTokenElement!.style.color = 'orange';
+        alertTokenElement!.style.fontSize = '0.8rem';
+        alertTokenElement!.innerHTML = 'Token inválido';
     }
 }
 
@@ -45,14 +51,7 @@ const Home: NextPage = () => {
                                     const tokenInput = document.getElementById('token-input') as HTMLInputElement;
                                     const token = tokenInput.value;
                                     localStorage.setItem('token', token);
-                                    if (await checkToken(token)){
-                                        window.location.href = '/dashboard';
-                                    } else {
-                                        const alertTokenElement = document.getElementById('alert-token');
-                                        alertTokenElement!.style.color = 'orange';
-                                        alertTokenElement!.style.fontSize = '0.8rem';
-                                        alertTokenElement!.innerHTML = 'Token inválido';
-                                    }
+                                    await checkToken(token);
                                 }
                             }
                             >
