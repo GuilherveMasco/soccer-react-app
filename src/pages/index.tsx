@@ -13,16 +13,14 @@ async function checkToken(token: string) {
         
         if (response.ok) {
             window.location.href = '/pesquisar';
+        } else {
+            const alertTokenElement = document.getElementById('alert-token');
+            alertTokenElement!.style.color = 'orange';
+            alertTokenElement!.style.fontSize = '0.8rem';
+            alertTokenElement!.innerHTML = 'Token inválido';
         }
-        const alertTokenElement = document.getElementById('alert-token');
-        alertTokenElement!.style.color = 'orange';
-        alertTokenElement!.style.fontSize = '0.8rem';
-        alertTokenElement!.innerHTML = 'Token inválido';
     } catch (error) {
-        const alertTokenElement = document.getElementById('alert-token');
-        alertTokenElement!.style.color = 'orange';
-        alertTokenElement!.style.fontSize = '0.8rem';
-        alertTokenElement!.innerHTML = 'Token inválido';
+        return error;
     }
 }
 
