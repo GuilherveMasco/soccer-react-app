@@ -3,7 +3,24 @@ import Image from 'next/image';
 import { Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-const Home: NextPage = () => {  
+async function checkToken(token: string) {
+    try {
+        const response = await fetch('https://api-football-v1.p.rapidapi.com/v3/timezone', {
+            headers: {
+                'X-RapidAPI-Key': token,
+            }
+        });
+        
+        if (response.ok) {
+            return true;
+        }
+        return false;
+    } catch (error) {
+        return false;
+    }
+}
+
+const Home: NextPage = () => {
     
     return (
         <div className="global-background w-screen h-screen">
@@ -23,12 +40,19 @@ const Home: NextPage = () => {
                             </div>
                             
                             <form className="flex flex-col w-1/10 bg-[#d3f5ff] shadow-md rounded p-8" id="login"
-                                onSubmit={(e) => {
+                                onSubmit={async (e) => {
                                     e.preventDefault();
                                     const tokenInput = document.getElementById('token-input') as HTMLInputElement;
                                     const token = tokenInput.value;
                                     localStorage.setItem('token', token);
-                                    window.location.href = '/dashboard';
+                                    if (await checkToken(token)){
+                                        window.location.href = '/dashboard';
+                                    } else {
+                                        const alertTokenElement = document.getElementById('alert-token');
+                                        alertTokenElement!.style.color = 'orange';
+                                        alertTokenElement!.style.fontSize = '0.8rem';
+                                        alertTokenElement!.innerHTML = 'Token inválido';
+                                    }
                                 }
                             }
                             >
@@ -38,6 +62,10 @@ const Home: NextPage = () => {
                                 id="token-input"
                                 className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
                                 />
+
+                                <p id="alert-token"
+                                className="mb-4 flex"
+                                ></p>
 
                                 <a
                                 href="https://www.api-football.com/documentation-v3"
