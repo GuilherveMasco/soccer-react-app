@@ -10,6 +10,11 @@
     background-color: #f5f5f7;
 }
 
+.noise-background {
+    background-image: url('https://raw.githubusercontent.com/GuilherveMasco/soccer-react-app/2-criar-tela-de-seleções/src/components/Images/noise-bg.png');
+    background-repeat: repeat;
+}
+
 .style-logo {
     width: 300px
 }

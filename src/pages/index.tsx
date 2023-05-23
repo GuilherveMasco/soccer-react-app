@@ -45,7 +45,7 @@ const Home: NextPage = () => {
                                 />
                             </div>
                             
-                            <form className="flex flex-col w-1/10 bg-[#d3f5ff] shadow-md rounded p-8" id="login"
+                            <form className="flex flex-col w-1/10 noise-background shadow-md rounded p-8" id="login"
                                 onSubmit={async (e) => {
                                     e.preventDefault();
                                     const tokenInput = document.getElementById('token-input') as HTMLInputElement;
