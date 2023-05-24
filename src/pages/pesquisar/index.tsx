@@ -1,5 +1,5 @@
-import type { NextPage } from 'next'
 import React, { useState, useEffect } from 'react';
+import type { NextPage } from 'next'
 import BadRequest from '../../components/BadRequest';
 
 interface Country {
@@ -21,21 +21,23 @@ interface Team {
     }
 }
 
-const SearchPage = () => {
+const SearchPage: NextPage = () => {
     const [countries, setCountries] = useState<Country[]>([]);
     const [leagues, setLeagues] = useState<League[]>([]);
     const [teams, setTeams] = useState<Team[]>([]);
     const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
     const [selectedLeague, setSelectedLeague] = useState<number | null>(null);
+    const [token, setToken] = useState('');
 
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-        return (
-            <BadRequest />
-        )
-    }
-
+    useEffect(() => {
+        const storedToken = localStorage.getItem('token') || '';
+        if (storedToken) {
+            setToken(storedToken);
+        } else {
+            window.location.href = '/';
+        }
+    }, []);
+    
     useEffect(() => {
         const fetchCountries = async () => {
             try {
@@ -51,8 +53,10 @@ const SearchPage = () => {
             }
         };
 
-        fetchCountries();
-    }, []);
+        if (token) {
+            fetchCountries();
+        }
+    }, [token]);
 
     useEffect(() => {
         const fetchLeagues = async () => {
@@ -71,8 +75,10 @@ const SearchPage = () => {
             }
         };
 
-        fetchLeagues();
-    }, [selectedCountry]);
+        if (token) {
+            fetchLeagues();
+        }
+    }, [selectedCountry, token]);
 
     useEffect(() => {
         const currentYear = new Date().getFullYear();
@@ -92,8 +98,10 @@ const SearchPage = () => {
             }
         };
 
-        fetchTeams();
-    }, [selectedLeague]);
+        if (token) {
+            fetchTeams();
+        }
+    }, [selectedLeague, token]);
 
     const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCountryName = event.target.value;
@@ -143,4 +151,4 @@ const SearchPage = () => {
     );
 };
 
-export default SearchPage
+export default SearchPage;

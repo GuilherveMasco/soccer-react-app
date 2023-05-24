@@ -1,7 +1,6 @@
-import type { NextPage } from 'next'
+import React from 'react';
 import Image from 'next/image';
 import { Flex, VStack } from '@chakra-ui/react';
-import React from 'react';
 
 async function checkToken(token: string) {
     try {
