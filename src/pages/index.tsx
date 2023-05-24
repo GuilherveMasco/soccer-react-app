@@ -11,6 +11,7 @@ async function checkToken(token: string) {
         });
         
         if (response.ok) {
+            localStorage.setItem('token', token);
             window.location.href = '/pesquisar';
         } else {
             const alertTokenElement = document.getElementById('alert-token');
@@ -36,7 +37,7 @@ const LoginPage = () => {
                         <div className="flex flex-col items-center justify-center h-screen">
                             <div>
                                 <Image
-                                src="https://raw.githubusercontent.com/GuilherveMasco/soccer-react-app/2-criar-tela-de-selecoes/src/assets/images/soccer-app-logo.png"
+                                src="https://raw.githubusercontent.com/GuilherveMasco/soccer-react-app/development/src/assets/images/soccer-app-logo.png"
                                 width= {200}
                                 height= {200}
                                 alt="Soccer App Logo"
@@ -48,7 +49,6 @@ const LoginPage = () => {
                                     e.preventDefault();
                                     const tokenInput = document.getElementById('token-input') as HTMLInputElement;
                                     const token = tokenInput.value;
-                                    localStorage.setItem('token', token);
                                     await checkToken(token);
                                 }
                             }

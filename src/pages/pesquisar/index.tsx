@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next'
-import BadRequest from '../../components/BadRequest';
 
 interface Country {
     code: number;
@@ -27,6 +26,7 @@ const SearchPage: NextPage = () => {
     const [teams, setTeams] = useState<Team[]>([]);
     const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
     const [selectedLeague, setSelectedLeague] = useState<number | null>(null);
+    const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
     const [token, setToken] = useState('');
 
     useEffect(() => {
@@ -114,39 +114,79 @@ const SearchPage: NextPage = () => {
         setSelectedLeague(selectedLeagueId);
     };
 
+    const handleTeamChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedTeamId = parseInt(event.target.value, 10);
+        setSelectedTeam(selectedTeamId);
+    };
+
     return (
-        <div>
-          <h2>Seleção de País, Liga e Time</h2>
-          <select value={selectedCountry || ''} onChange={handleCountryChange}>
-            <option value="">Selecione um país</option>
-            {countries.map((country) => (
-              <option key={country.name} value={country.name}>
-                {country.name}
-              </option>
-            ))}
-          </select>
-      
-          {selectedCountry && (
-            <select value={selectedLeague || ''} onChange={handleLeagueChange}>
-              <option value="">Selecione uma liga</option>
-              {leagues.map((league) => (
-                <option key={league.league.id} value={league.league.id}>
-                  {league.league.name}
-                </option>
-              ))}
-            </select>
-          )}
-      
-          {selectedLeague && (
-            <select>
-              <option value="">Selecione um time</option>
-              {teams.map((team) => (
-                <option key={team.team.id} value={team.team.id}>
-                  {team.team.name}
-                </option>
-              ))}
-            </select>
-          )}
+        <div className="flex flex-col items-center justify-center h-screen">
+            <form className="flex flex-col w-1/10 noise-background shadow-md rounded p-8" id="search"
+                onSubmit={async (e) => {
+                    e.preventDefault();
+                    // chamada de tela de resultados
+                }
+            }
+            >
+                <h1 className="text-2xl font-bold mb-5 flex items-center justify-center font-color">Dados do time</h1>
+
+                <select value={selectedCountry || ''} onChange={handleCountryChange}
+                className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
+                >
+                    <option value="">Selecione um país</option>
+                    {countries.map((country) => (
+                    <option key={country.name} value={country.name}>
+                        {country.name}
+                    </option>
+                    ))}
+                </select>
+        
+                {!selectedCountry ? (
+                    <select disabled
+                    className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
+                    >
+                        <option value="">Selecione uma liga</option>
+                    </select>
+                ) : (
+                    <select value={selectedLeague || ''} onChange={handleLeagueChange}
+                    className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
+                    >
+                    <option value="">Selecione uma liga</option>
+                    {leagues.map((league) => (
+                        <option key={league.league.id} value={league.league.id}>
+                        {league.league.name}
+                        </option>
+                    ))}
+                    </select>
+                )}
+        
+                {!selectedLeague ? (
+                    <select disabled
+                    className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
+                    >
+                        <option value="">Selecione um time</option>
+                    </select>
+                ) : (
+                    <select value={selectedTeam || ''} onChange={handleTeamChange}
+                    className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
+                    >
+                    <option value="">Selecione um time</option>
+                    {teams.map((team) => (
+                        <option key={team.team.id} value={team.team.id}>
+                        {team.team.name}
+                        </option>
+                    ))}
+                    </select>
+                )}
+
+                <button
+                type="submit"
+                form="search"
+                className="bg-[#31c48d] hover:bg-[#28a074] text-white font-bold py-2 px-4 rounded"
+                >
+                    Pesquisar
+                </button>
+            </form>
         </div>
     );
 };
