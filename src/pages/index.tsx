@@ -9,8 +9,10 @@ async function checkToken(token: string) {
                 'X-RapidAPI-Key': token,
             }
         });
+
+        const data = await response.json();
         
-        if (response.ok) {
+        if (data.results !== 0) {
             localStorage.setItem('token', token);
             window.location.href = '/pesquisar';
         } else {

@@ -88,7 +88,7 @@ const teamDetails = () => {
                 <h2>Informações sobre {teamName}</h2>
             </div>
             <div>
-                <h2>Jogadores de {teamName}</h2>
+                <h2>Jogadores</h2>
                 <ul>
                     {dataPlayers.map((player) => (
                         <li key={player.player.id}>
