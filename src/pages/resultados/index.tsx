@@ -17,6 +17,13 @@ interface PlayerData {
     };
 }
 
+interface Lineups {
+    lineups: {
+        formation: string;
+        played: number;
+    };
+}
+
 const teamDetails = () => {
     const [teamId, setTeamId] = useState<number | null>(null);
     const [leagueId, setleagueId] = useState<number | null>(null);
@@ -24,8 +31,9 @@ const teamDetails = () => {
     const currentYear = new Date().getFullYear();
     const [dataTeam, setDataTeam] = useState<Team[]>([]);
     const [dataPlayers, setDataPlayers] = useState<PlayerData[]>([]);
-
-    let teamName = '';
+    const [dataLineups, setDataLineups] = useState<Lineups[]>([]);
+    const [teamName, setTeamName] = useState('');
+    const [mainLineup, setMainLineup] = useState('Sem informações');
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
@@ -51,13 +59,18 @@ const teamDetails = () => {
 
     const fetchTeamDetails = async () => {
         try {
-            const response = await fetch(`https://v3.football.api-sports.io/teams?id=${teamId}`, {
+            const response = await fetch(
+                `https://v3.football.api-sports.io/teams/statistics?team=${teamId}&season=${currentYear}&league=${leagueId}`, {
                 headers: {
                     'X-RapidAPI-Key': token,
                 }
             });
             const data = await response.json();
-            setDataTeam(data.response);
+            setDataTeam(data.response.team);
+            setDataLineups(data.response.lineups);
+
+            setTeamName(data.response.team.name);
+            setMainLineup(data.response.lineups[0].formation);
         } catch (error) {
             console.error('Erro ao obter os detalhes do time:', error);
         }
@@ -84,10 +97,6 @@ const teamDetails = () => {
         }
     }, [token, teamId]);
 
-    if (dataTeam[0]) {
-        teamName = dataTeam[0].team.name;
-    }
-
     return (
         <div>
             <div>
@@ -110,6 +119,8 @@ const teamDetails = () => {
                         </li>
                     ))}
                 </ul>
+                <h2>Formação favorita</h2>
+                <p>{mainLineup}</p>
             </div>
         </div>
     );

@@ -124,7 +124,7 @@ const SearchPage: NextPage = () => {
             <form className="flex flex-col w-1/10 noise-background shadow-md rounded p-8" id="search"
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    window.location.href = `/resultados?teamId=${selectedTeam}`;
+                    window.location.href = `/resultados?teamId=${selectedTeam}&leagueId=${selectedLeague}`;
                 }
             }
             >
