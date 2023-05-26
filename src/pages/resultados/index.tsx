@@ -19,6 +19,7 @@ interface PlayerData {
 
 const teamDetails = () => {
     const [teamId, setTeamId] = useState<number | null>(null);
+    const [leagueId, setleagueId] = useState<number | null>(null);
     const [token, setToken] = useState('');
     const currentYear = new Date().getFullYear();
     const [dataTeam, setDataTeam] = useState<Team[]>([]);
@@ -29,8 +30,13 @@ const teamDetails = () => {
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
         const teamId = searchParams.get('teamId');
-        if (teamId) {
+        const leagueId = searchParams.get('leagueId');
+
+        if (teamId && leagueId) {
             setTeamId(Number(teamId));
+            setleagueId(Number(leagueId));
+        } else {
+            window.location.href = '/';
         }
     }, []);
 
