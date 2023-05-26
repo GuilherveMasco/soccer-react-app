@@ -4,7 +4,7 @@ import { Flex, VStack } from '@chakra-ui/react';
 
 async function checkToken(token: string) {
     try {
-        const response = await fetch('https://api-football-v1.p.rapidapi.com/v3/timezone', {
+        const response = await fetch('https://v3.football.api-sports.io/status', {
             headers: {
                 'X-RapidAPI-Key': token,
             }

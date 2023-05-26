@@ -41,7 +41,7 @@ const SearchPage: NextPage = () => {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await fetch('https://api-football-v1.p.rapidapi.com/v3/countries', {
+                const response = await fetch('https://v3.football.api-sports.io/countries', {
                     headers: {
                         'X-RapidAPI-Key': token,
                     }
@@ -62,7 +62,7 @@ const SearchPage: NextPage = () => {
         const fetchLeagues = async () => {
             if (selectedCountry) {
                 try {
-                    const response = await fetch(`https://api-football-v1.p.rapidapi.com/v3/leagues?country=${selectedCountry}`, {
+                    const response = await fetch(`https://v3.football.api-sports.io/leagues?country=${selectedCountry}`, {
                         headers: {
                             'X-RapidAPI-Key': token,
                         }
@@ -85,7 +85,7 @@ const SearchPage: NextPage = () => {
         const fetchTeams = async () => {
             if (selectedLeague) {
                 try {
-                    const response = await fetch(`https://api-football-v1.p.rapidapi.com/v3/teams?league=${selectedLeague}&season=${currentYear}`, {
+                    const response = await fetch(`https://v3.football.api-sports.io/teams?league=${selectedLeague}&season=${currentYear}`, {
                         headers: {
                             'X-RapidAPI-Key': token,
                         }
@@ -124,7 +124,7 @@ const SearchPage: NextPage = () => {
             <form className="flex flex-col w-1/10 noise-background shadow-md rounded p-8" id="search"
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    // chamada de tela de resultados
+                    window.location.href = `/resultados?teamId=${selectedTeam}`;
                 }
             }
             >
