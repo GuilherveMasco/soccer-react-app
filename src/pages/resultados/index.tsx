@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Bar } from 'react-chartjs-2';
 
 interface Team {
     team: {
@@ -128,6 +129,58 @@ const teamDetails = () => {
         }
     }, [token, teamId]);
 
+    const data = {
+        labels: ['0-15', '16-30', '31-45', '46-60', '61-75', '76-90', '91-105', '106-120'],
+        datasets: [
+            {
+                label: 'Gols',
+                data: [
+                    goals?.goals.t0_15,
+                    goals?.goals.t16_30,
+                    goals?.goals.t31_45,
+                    goals?.goals.t46_60,
+                    goals?.goals.t61_75,
+                    goals?.goals.t76_90,
+                    goals?.goals.t91_105,
+                    goals?.goals.t106_120,
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(201, 203, 207, 0.2)',
+                    'rgba(0, 0, 0, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)',
+                    'rgb(0, 0, 0)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const options = {
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    };
+
+    const goalsChart = (
+        <Bar data={data} options={options} />
+    );
+
     return (
         <div className="items-center justify-center h-screen team-details font-color global-background">
             <div className='flex flex-col w-1/10 noise-background shadow-md rounded p-8'>
@@ -174,6 +227,9 @@ const teamDetails = () => {
                 </table>
 
                 <h2 className='font-bold flex items-center justify-center global-background font-color mt-5 flex-col w-1/10 noise-background shadow-md rounded p-8'>Gols por tempo de jogo</h2>
+                <div className='flex items-center justify-center global-background font-color mb-5'>
+                    {goalsChart}
+                </div>
             </div>
         </div>
     );
