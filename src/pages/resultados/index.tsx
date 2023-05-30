@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
-
-interface Team {
-    team: {
-        name: string;
-        logo: string;
-    };
-}
+import { Chart, registerables } from 'chart.js';
 
 interface PlayerData {
     player: {
@@ -38,6 +32,7 @@ const teamDetails = () => {
     const currentYear = new Date().getFullYear();
     const [dataPlayers, setDataPlayers] = useState<PlayerData[]>([]);
     const [teamName, setTeamName] = useState('');
+    const [teamLogo, setTeamLogo] = useState('');
     const [mainLineup, setMainLineup] = useState('Sem informações');
 
     const [played, setPlayed] = useState(0);
@@ -46,6 +41,8 @@ const teamDetails = () => {
     const [loses, setLoses] = useState(0);
 
     const [goals, setGoals] = useState<Goals | null>(null);
+
+    Chart.register(...registerables);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
@@ -80,6 +77,7 @@ const teamDetails = () => {
             const data = await response.json();
 
             setTeamName(data.response.team.name);
+            setTeamLogo(data.response.team.logo);
             setMainLineup(data.response.lineups[0].formation);
 
             setPlayed(data.response.fixtures.played.total);
@@ -144,26 +142,8 @@ const teamDetails = () => {
                     goals?.goals.t91_105,
                     goals?.goals.t106_120,
                 ],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 205, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(201, 203, 207, 0.2)',
-                    'rgba(0, 0, 0, 0.2)',
-                ],
-                borderColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(255, 159, 64)',
-                    'rgb(255, 205, 86)',
-                    'rgb(75, 192, 192)',
-                    'rgb(54, 162, 235)',
-                    'rgb(153, 102, 255)',
-                    'rgb(201, 203, 207)',
-                    'rgb(0, 0, 0)',
-                ],
+                backgroundColor: 'rgba(49, 196, 141, 1)',
+                borderColor: 'rgba(29, 29, 31, 1)',
                 borderWidth: 1,
             },
         ],
@@ -171,64 +151,93 @@ const teamDetails = () => {
 
     const options = {
         scales: {
-            y: {
-                beginAtZero: true,
-            },
+          y: {
+            beginAtZero: true,
+          },
         },
-    };
+      };
 
-    const goalsChart = (
-        <Bar data={data} options={options} />
-    );
+    const goalsChart = () => {
+        return <Bar data={data} options={options} />
+    };
 
     return (
         <div className="items-center justify-center h-screen team-details font-color global-background">
             <div className='flex flex-col w-1/10 noise-background shadow-md rounded p-8'>
-                <h1 className='text-2xl font-bold flex items-center justify-center font-color'>Informações sobre {teamName}</h1>
+                <h1 className='text-2xl font-bold flex items-center justify-center font-color'>
+                    Informações sobre {teamName}
+                </h1>
+                <div className='flex items-center justify-center'>
+                    <img src={teamLogo} alt={teamName} className='team-logo' />
+                </div>
             </div>
-            <div>
-                <h2 className='font-bold flex items-center justify-center font-color mt-5 flex-col w-1/10 noise-background shadow-md rounded p-8'>Jogadores</h2>
-                <ul className="player-list font-color">
-                    {dataPlayers.map((player) => (
-                        <li key={player.player.id} className='player-item font-color'>
-                            <div className="player-info font-color">
-                                <img className="player-photo" src={player.player.photo} alt={player.player.name} />
-                                <div className="player-details font-color">
-                                <h3 className='font-bold font-color'>{player.player.name}</h3>
-                                <p>Idade: {player.player.age}</p>
-                                <p>Nacionalidade: {player.player.nationality}</p>
+            <div className='global-background'>
+                <div className='boder'>
+                    <h2 className='font-bold flex items-center justify-center font-color mt-5 flex-col w-1/10 noise-background shadow-md rounded p-8'>
+                        Jogadores ({currentYear})
+                    </h2>
+                    <ul className="player-list font-color">
+                        {dataPlayers.map((player) => (
+                            <li key={player.player.id} className='flex flex-col w-1/10 noise-background shadow-md rounded p-8 font-color'>
+                                <div className="player-info font-color">
+                                    <img className="player-photo" src={player.player.photo} alt={player.player.name} />
+                                    <div className="player-details font-color">
+                                    <h3 className='font-bold font-color'>{player.player.name}</h3>
+                                    <p>Idade: {player.player.age}</p>
+                                    <p>Nacionalidade: {player.player.nationality}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                
+                <div className='boder'>
+                    <h2 className='font-bold flex items-center justify-center global-background font-color mt-5 flex-col w-1/10 noise-background shadow-md rounded p-8'>
+                        Formação favorita ({currentYear})
+                    </h2>
+                    <div className='flex items-center justify-center global-background mb-5'>
+                        <p className='formation'>
+                            {mainLineup}
+                        </p>
+                    </div>
+                </div>
 
-                <h2 className='font-bold flex items-center justify-center global-background font-color mt-5 flex-col w-1/10 noise-background shadow-md rounded p-8'>Formação favorita</h2>
-                <p className='flex items-center justify-center global-background font-color mb-5'>{mainLineup}</p>
+                <div className='boder'>
+                    <h2 className='font-bold flex items-center justify-center global-background font-color flex-col w-1/10 noise-background shadow-md rounded p-8'>
+                        Estatísticas de jogos ({currentYear})
+                    </h2>
+                    <div className='flex items-center justify-center font-color'>
+                        <table className="game-stats global-background font-color">
+                            <thead>
+                                <tr>
+                                <th>Jogos</th>
+                                <th>Vitórias</th>
+                                <th>Empates</th>
+                                <th>Derrotas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <td>{played}</td>
+                                <td>{wins}</td>
+                                <td>{draws}</td>
+                                <td>{loses}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                <h2 className='font-bold flex items-center justify-center global-background font-color flex-col w-1/10 noise-background shadow-md rounded p-8'>Estatísticas de jogos</h2>
-                <table className="game-stats global-background font-color">
-                    <thead>
-                        <tr>
-                        <th>Jogos</th>
-                        <th>Vitórias</th>
-                        <th>Empates</th>
-                        <th>Derrotas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>{played}</td>
-                        <td>{wins}</td>
-                        <td>{draws}</td>
-                        <td>{loses}</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h2 className='font-bold flex items-center justify-center global-background font-color mt-5 flex-col w-1/10 noise-background shadow-md rounded p-8'>Gols por tempo de jogo</h2>
-                <div className='flex items-center justify-center global-background font-color mb-5'>
-                    {goalsChart}
+                <div className='boder'>
+                    <h2 className='font-bold flex items-center justify-center global-background font-color mt-5 flex-col w-1/10 noise-background shadow-md rounded p-8'>
+                        Gols por tempo de jogo ({currentYear})
+                    </h2>
+                    <div className='flex items-center justify-center global-background font-color mt-5 mb-5'>
+                        <div className='game-stats font-color'>
+                            {goalsChart()}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

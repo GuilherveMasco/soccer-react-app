@@ -70,7 +70,7 @@ h2 {
 }
   
 .game-stats {
-    width: 100%;
+    width: 50%;
     border-collapse: collapse;
 }
   
@@ -99,4 +99,20 @@ tr:nth-child(even) {
     overflow: hidden;
     background-image: url('https://raw.githubusercontent.com/GuilherveMasco/soccer-react-app/development/src/assets/images/noise-bg.png');
     background-repeat: repeat;
+}
+
+.border {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.team-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.formation {
+    font-size: 24px;
+    font-weight: bold;
 }

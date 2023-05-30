@@ -57,6 +57,7 @@ const LoginPage = () => {
                             >
                                 <h1 className="text-2xl font-bold mb-5 flex items-center justify-center">Entre para continuar</h1>
                                 <input
+                                type="password"
                                 placeholder="Token da API"
                                 id="token-input"
                                 className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
