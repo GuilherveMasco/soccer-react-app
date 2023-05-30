@@ -4,13 +4,15 @@ import { Flex, VStack } from '@chakra-ui/react';
 
 async function checkToken(token: string) {
     try {
-        const response = await fetch('https://api-football-v1.p.rapidapi.com/v3/timezone', {
+        const response = await fetch('https://v3.football.api-sports.io/status', {
             headers: {
                 'X-RapidAPI-Key': token,
             }
         });
+
+        const data = await response.json();
         
-        if (response.ok) {
+        if (data.results !== 0) {
             localStorage.setItem('token', token);
             window.location.href = '/pesquisar';
         } else {
@@ -55,6 +57,7 @@ const LoginPage = () => {
                             >
                                 <h1 className="text-2xl font-bold mb-5 flex items-center justify-center">Entre para continuar</h1>
                                 <input
+                                type="password"
                                 placeholder="Token da API"
                                 id="token-input"
                                 className="mb-4 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:border-blue-500 required"
